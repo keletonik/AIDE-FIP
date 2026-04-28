@@ -1,0 +1,74 @@
+[
+  {
+    "id": "as-1670-1",
+    "title": "AS 1670.1 — Fire detection, warning, control and intercom systems — System design, installation and commissioning — Fire",
+    "summary": "Defines design, installation and commissioning requirements for automatic fire detection systems in Australia. Covers detector spacing, zoning, FIP location, ASE, brigade interface and verification testing.",
+    "year": 2018,
+    "authority": "Standards Australia",
+    "clauses": [
+      { "number": "1.4",  "title": "Definitions",                          "paraphrase": "Defines key terms (FIP, ASE, addressable point, zone)." },
+      { "number": "3.2",  "title": "Detector spacing — smoke",             "paraphrase": "Maximum spacing for photoelectric / ionisation point detectors based on ceiling height and configuration." },
+      { "number": "3.5",  "title": "Detector spacing — heat",              "paraphrase": "Spacing rules for fixed-temperature and rate-of-rise heat detectors." },
+      { "number": "4.3",  "title": "Zoning",                               "paraphrase": "Maximum zone area, mandatory zone splits (stair, lift, riser, plant), labelling." },
+      { "number": "5.2",  "title": "FIP siting",                           "paraphrase": "Location of fire indicator panel relative to entry point and brigade access." },
+      { "number": "6.4",  "title": "Manual call points",                   "paraphrase": "Spacing, mounting height and travel distance for MCPs." },
+      { "number": "7.3",  "title": "Cable selection",                      "paraphrase": "Approved cable types (WS52W, MIMS) and segregation requirements." }
+    ]
+  },
+  {
+    "id": "as-1670-4",
+    "title": "AS 1670.4 — Fire detection, warning, control and intercom systems — Sound systems and intercom systems for emergency purposes",
+    "summary": "Sound system and EWIS / WIP requirements: speaker coverage, intelligibility, intercom warden phones.",
+    "year": 2018,
+    "authority": "Standards Australia",
+    "clauses": [
+      { "number": "3.3",  "title": "Speaker coverage",                     "paraphrase": "STI / coverage targets per occupied space." },
+      { "number": "5.1",  "title": "WIP siting",                           "paraphrase": "Where warden intercom phones must be located on each floor." }
+    ]
+  },
+  {
+    "id": "as-1851",
+    "title": "AS 1851 — Routine service of fire protection systems and equipment",
+    "summary": "Routine maintenance, inspection and testing schedule for fire systems including detection, sprinklers, hydrants, doors and ventilation.",
+    "year": 2012,
+    "authority": "Standards Australia",
+    "clauses": [
+      { "number": "6.3",  "title": "Monthly inspection — FIP",             "paraphrase": "Visual checks, fault list review, battery condition indicators." },
+      { "number": "6.4",  "title": "Six-monthly tests",                    "paraphrase": "Detector functional sample, MCP test, ASE / brigade signalling test." },
+      { "number": "6.5",  "title": "Annual battery load test",             "paraphrase": "Discharge test on FIP standby batteries; voltage drop limits." },
+      { "number": "6.10", "title": "Records",                              "paraphrase": "Logbook entries, baseline records, defect register." }
+    ]
+  },
+  {
+    "id": "as-2118-1",
+    "title": "AS 2118.1 — Automatic fire sprinkler systems — General systems",
+    "summary": "Design and installation of automatic sprinkler systems for general occupancies.",
+    "year": 2017,
+    "authority": "Standards Australia",
+    "clauses": []
+  },
+  {
+    "id": "as-2419-1",
+    "title": "AS 2419.1 — Fire hydrant installations — System design, installation and commissioning",
+    "summary": "Hydrant system design, pressure / flow performance and commissioning.",
+    "year": 2021,
+    "authority": "Standards Australia",
+    "clauses": []
+  },
+  {
+    "id": "as-2444",
+    "title": "AS 2444 — Portable fire extinguishers and fire blankets — Selection and location",
+    "summary": "Selection, classification and placement of portable extinguishers and blankets per fire risk class.",
+    "year": 2001,
+    "authority": "Standards Australia",
+    "clauses": []
+  },
+  {
+    "id": "as-3745",
+    "title": "AS 3745 — Planning for emergencies in facilities",
+    "summary": "Emergency planning, EPC structure, ECO appointments, drills, signage and procedures.",
+    "year": 2010,
+    "authority": "Standards Australia",
+    "clauses": []
+  }
+]

@@ -1,0 +1,64 @@
+[
+  {
+    "code": "as1851-fip-monthly",
+    "label": "AS 1851 — FIP monthly inspection",
+    "frequency": "monthly",
+    "standard_id": "as-1851",
+    "items": [
+      "All mains-on, fault and alarm LEDs reading correctly",
+      "No outstanding faults on the panel display",
+      "Event log scrolled — no unresolved events since last visit",
+      "Battery voltage indication within range",
+      "Brigade signalling LED in the expected state",
+      "Spare fuses present and labelled",
+      "FIP cabinet locked, key in keysafe / register"
+    ]
+  },
+  {
+    "code": "as1851-six-monthly",
+    "label": "AS 1851 — six-monthly functional test",
+    "frequency": "six-monthly",
+    "standard_id": "as-1851",
+    "items": [
+      "Sample of 10% of detectors functionally tested (smoke / heat as appropriate)",
+      "All MCPs tested by sample, reset confirmed",
+      "Sounder operation confirmed, sound levels acceptable",
+      "Strobes operating where fitted",
+      "Brigade signalling test to monitoring centre — silent alarm",
+      "Mimic / sub-indicator panels reflecting FIP state",
+      "Cable entries, gland integrity visually inspected",
+      "Panel earthing continuity acceptable"
+    ]
+  },
+  {
+    "code": "as1851-annual",
+    "label": "AS 1851 — annual battery and full system",
+    "frequency": "annual",
+    "standard_id": "as-1851",
+    "items": [
+      "Standby battery discharge test under simulated alarm load",
+      "Battery voltage at end of discharge within manufacturer limits",
+      "Charger float voltage measured and recorded",
+      "100% of detectors functionally tested across a 12-month rolling sample",
+      "Cause-and-effect verification — selected scenarios",
+      "AS 1670.1 cable segregation visually re-checked",
+      "Logbook updated and signed",
+      "Defect register updated with any open items"
+    ]
+  },
+  {
+    "code": "panel-handover",
+    "label": "Panel handover / commissioning",
+    "frequency": "ad-hoc",
+    "standard_id": "as-1670-1",
+    "items": [
+      "As-built drawings present at panel",
+      "Zone schedule labelled and matches AS 1670.1 zoning",
+      "Loop schedule present, addresses match installed devices",
+      "Battery sized per AS 1670.1 standby + alarm calculation",
+      "Brigade interface tested and signed off by monitoring centre",
+      "Cause-and-effect documented and witnessed",
+      "Handover pack delivered to client (drawings, manuals, certificates)"
+    ]
+  }
+]

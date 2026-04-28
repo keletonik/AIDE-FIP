@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: theme('colors.ink');
+  color: theme('colors.body');
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Bigger tap targets — gloves on, holding a torch. */
+button, [role="button"], a.btn {
+  min-height: 44px;
+}
+
+a { color: theme('colors.link'); }
+a:hover { text-decoration: underline; }
+
+.card {
+  background: theme('colors.slate');
+  border: 1px solid theme('colors.line');
+  border-radius: 10px;
+}
+
+.kbd {
+  font-family: theme('fontFamily.mono');
+  background: theme('colors.line');
+  color: theme('colors.head');
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #333a45;
+  font-size: 0.85em;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: theme('colors.line');
+  color: theme('colors.muted');
+}
+
+.tag-warn { background: #3a1f17; color: #f4a08e; }
+.tag-ok   { background: #14321f; color: #8de0a8; }
+.tag-amber{ background: #3a2e10; color: #f3c879; }
+
+@media print {
+  html, body { background: white !important; color: black !important; }
+  .card { background: white !important; border: 1px solid #ccc !important; }
+  .tag, .kbd { background: #eee !important; color: black !important; border-color: #ccc !important; }
+  table { font-size: 11px; }
+  th, td { border-bottom: 1px solid #ccc; }
+  th { color: #444 !important; }
+}
+
+/* -------------------------------------------------------------------------
+   Splash screen — boot animation. Dark full-bleed overlay, panel-pulse
+   rings + wordmark + cycling status text. Built to feel like the FIP
+   itself coming online: not a marketing flourish, a system check.
+   ------------------------------------------------------------------------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: theme('colors.ink');
+  color: theme('colors.head');
+  pointer-events: none; /* let the app underneath warm up while we fade */
+}
+.splash-in  { animation: splash-fade-in 200ms ease-out both; }
+.splash-out { animation: splash-fade-out 280ms ease-in both; }
+
+.splash-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+
+.splash-pulse {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+}
+.splash-pulse .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: theme('colors.amber');
+  box-shadow: 0 0 18px rgba(245, 166, 35, 0.55);
+  animation: splash-dot 1100ms ease-in-out infinite;
+}
+.splash-pulse .ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid theme('colors.amber');
+  opacity: 0;
+  animation: splash-ring 1400ms cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+}
+.splash-pulse .r1 { animation-delay: 0ms; }
+.splash-pulse .r2 { animation-delay: 280ms; }
+.splash-pulse .r3 { animation-delay: 560ms; }
+
+.splash-wordmark {
+  font-weight: 700;
+  font-size: clamp(28px, 5vw, 40px);
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.05em;
+}
+.splash-wordmark .splash-dot {
+  color: theme('colors.amber');
+  padding: 0 0.05em;
+  animation: splash-blink 800ms steps(1, end) infinite;
+}
+
+.splash-status {
+  font-family: theme('fontFamily.mono');
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: theme('colors.muted');
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 16px;
+}
+.splash-status-text {
+  display: inline-block;
+  min-width: 12em;
+  text-align: center;
+  animation: splash-text 220ms ease-out;
+}
+
+/* Three sequential dots after the status text — same rhythm as a panel
+   "polling" indicator. */
+.splash-ellipsis {
+  display: inline-flex;
+  gap: 3px;
+}
+.splash-ellipsis i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: theme('colors.muted');
+  animation: splash-elip 900ms ease-in-out infinite;
+}
+.splash-ellipsis i:nth-child(2) { animation-delay: 120ms; }
+.splash-ellipsis i:nth-child(3) { animation-delay: 240ms; }
+
+@keyframes splash-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes splash-fade-out { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+
+@keyframes splash-dot {
+  0%, 100% { transform: scale(1);   box-shadow: 0 0 14px rgba(245, 166, 35, 0.45); }
+  50%      { transform: scale(1.18); box-shadow: 0 0 22px rgba(245, 166, 35, 0.85); }
+}
+@keyframes splash-ring {
+  0%   { width: 14px; height: 14px; opacity: 0.85; }
+  60%  { opacity: 0.20; }
+  100% { width: 84px; height: 84px; opacity: 0; }
+}
+@keyframes splash-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0.25; }
+}
+@keyframes splash-elip {
+  0%, 80%, 100% { opacity: 0.25; }
+  40%           { opacity: 1; }
+}
+@keyframes splash-text {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-pulse .ring,
+  .splash-pulse .dot,
+  .splash-wordmark .splash-dot,
+  .splash-ellipsis i { animation: none; }
+}
+
+input, select, textarea {
+  background: theme('colors.slate');
+  border: 1px solid theme('colors.line');
+  border-radius: 8px;
+  color: theme('colors.head');
+  padding: 10px 12px;
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid theme('colors.link');
+  outline-offset: -1px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 8px;
+  background: theme('colors.line'); color: theme('colors.head');
+  border: 1px solid #2f343d;
+  font-weight: 500;
+}
+.btn:hover { background: #2f343d; text-decoration: none; }
+.btn-primary {
+  background: theme('colors.link'); color: #0b0d10; border-color: theme('colors.link');
+}
+.btn-primary:hover { filter: brightness(0.95); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 8px 10px; border-bottom: 1px solid theme('colors.line'); text-align: left; vertical-align: top; }
+th { color: theme('colors.muted'); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
