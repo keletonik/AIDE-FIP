@@ -29,6 +29,10 @@ type SymptomSeed = {
 
 type CategorySeed = { slug: string; label: string; family: string };
 
+type ServiceTemplateSeed = {
+  code: string; label: string; frequency: string; standard_id?: string; items: string[];
+};
+
 function readJson<T>(rel: string): T {
   return JSON.parse(readFileSync(resolve(process.cwd(), rel), 'utf8')) as T;
 }
@@ -40,6 +44,11 @@ function seed() {
   const standards   = readJson<StandardSeed[]>('data/standards.json');
   const symptoms    = readJson<SymptomSeed[]>('data/troubleshooting.json');
   const categories  = readJson<CategorySeed[]>('data/categories.json');
+  const templates   = readJson<ServiceTemplateSeed[]>('data/service-templates.json');
+
+  // FK enforcement is global; turn it off around the wipe so we can refresh
+  // reference data without churning the workflow rows that point at it.
+  h.pragma('foreign_keys = OFF');
 
   const tx = h.transaction(() => {
     h.exec(`
@@ -51,6 +60,13 @@ function seed() {
       DELETE FROM symptom_causes;
       DELETE FROM symptoms;
       DELETE FROM product_categories;
+      DELETE FROM service_templates;
+      -- Reset AUTOINCREMENT counters on the seed-only tables so a redeploy
+      -- gives stable, predictable IDs in URLs and bookmarks.
+      DELETE FROM sqlite_sequence WHERE name IN (
+        'panel_commands','battery_loads','standard_clauses',
+        'symptom_causes','service_templates'
+      );
     `);
 
     const insPanel = h.prepare(`
@@ -116,9 +132,18 @@ function seed() {
       INSERT INTO product_categories (slug, label, family) VALUES (?, ?, ?)
     `);
     for (const c of categories) insCat.run(c.slug, c.label, c.family);
+
+    const insTpl = h.prepare(`
+      INSERT INTO service_templates (code, label, frequency, standard_id, items_json)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+    for (const t of templates) {
+      insTpl.run(t.code, t.label, t.frequency, t.standard_id ?? null, JSON.stringify(t.items));
+    }
   });
 
   tx();
+  h.pragma('foreign_keys = ON');
 
   const counts = {
     panels:    (h.prepare('SELECT COUNT(*) c FROM panels').get() as { c: number }).c,
@@ -129,6 +154,7 @@ function seed() {
     symptoms:  (h.prepare('SELECT COUNT(*) c FROM symptoms').get() as { c: number }).c,
     causes:    (h.prepare('SELECT COUNT(*) c FROM symptom_causes').get() as { c: number }).c,
     categories:(h.prepare('SELECT COUNT(*) c FROM product_categories').get() as { c: number }).c,
+    templates: (h.prepare('SELECT COUNT(*) c FROM service_templates').get() as { c: number }).c,
   };
   console.log('seed complete:', counts);
 }

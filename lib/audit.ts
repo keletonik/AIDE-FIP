@@ -1,5 +1,6 @@
 import { db } from './db';
 import { headers } from 'next/headers';
+import { currentUser } from './auth';
 
 // Audit log captures user-meaningful actions (calculation submitted,
 // troubleshooting graph queried, KB link followed). Server-side only —
@@ -16,10 +17,15 @@ export type AuditEntry = {
 export async function audit(entry: AuditEntry) {
   let ip: string | null = null;
   let ua: string | null = null;
+  let actor: string | null = entry.actor ?? null;
   try {
     const h = await headers();
     ip = h.get('x-forwarded-for')?.split(',')[0].trim() || h.get('x-real-ip') || null;
     ua = h.get('user-agent');
+    if (!actor) {
+      const me = await currentUser().catch(() => null);
+      if (me) actor = me.email;
+    }
   } catch {
     // Called outside a request scope — that's fine, we just won't capture
     // the network metadata.
@@ -29,7 +35,7 @@ export async function audit(entry: AuditEntry) {
     INSERT INTO audit_log (actor, action, target, payload, ip, user_agent)
     VALUES (?, ?, ?, ?, ?, ?)
   `).run(
-    entry.actor ?? null,
+    actor,
     entry.action,
     entry.target ?? null,
     entry.payload === undefined ? null : JSON.stringify(entry.payload),

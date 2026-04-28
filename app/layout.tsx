@@ -24,10 +24,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh">
         <RequestTimer />
         <Nav />
-        <main className="max-w-5xl mx-auto px-4 py-6">
+        <main className="max-w-6xl mx-auto px-4 py-6">
           {children}
         </main>
-        <footer className="max-w-5xl mx-auto px-4 py-10 text-sm text-muted">
+        <footer className="max-w-6xl mx-auto px-4 py-10 text-sm text-muted print:hidden">
           AIDE-FIP — built for techs in the field. Standards remain copyright Standards Australia; this app links out, it does not reproduce.
         </footer>
         <script

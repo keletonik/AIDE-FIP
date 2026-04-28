@@ -77,6 +77,54 @@ export function calculateBattery(input: BatteryInput): BatteryResult {
   };
 }
 
+// Roll-up of a multi-panel project: sum each panel's loads, apply the
+// project-wide standby / alarm horizon, then a single ageing factor.
+export type ProjectInput = {
+  panels: { panelSlug: string; label: string; extraStandbyMa: number; extraAlarmMa: number }[];
+  standbyHours: number;
+  alarmMinutes: number;
+  ageingFactor?: number;
+};
+
+export type ProjectResult = {
+  totalStandbyMa: number;
+  totalAlarmMa: number;
+  standbyHours: number;
+  alarmMinutes: number;
+  ageingFactor: number;
+  requiredAh: number;
+  suggestedAh: number;
+  perPanel: BatteryResult[];
+};
+
+export function calculateProject(input: ProjectInput): ProjectResult {
+  const ageingFactor = clampRange(input.ageingFactor ?? 1.25, 1.0, 2.0);
+  const standbyHours = clampPositive(input.standbyHours, 24);
+  const alarmMinutes = clampPositive(input.alarmMinutes, 30);
+
+  const perPanel = input.panels.map(p => calculateBattery({
+    panelSlug: p.panelSlug,
+    standbyHours, alarmMinutes,
+    extraStandbyMa: p.extraStandbyMa,
+    extraAlarmMa: p.extraAlarmMa,
+    ageingFactor,
+  }));
+
+  const totalStandbyMa = perPanel.reduce((s, p) => s + p.standbyMa, 0);
+  const totalAlarmMa   = perPanel.reduce((s, p) => s + p.alarmMa, 0);
+  const standbyAh = (totalStandbyMa / 1000) * standbyHours;
+  const alarmAh   = (totalAlarmMa   / 1000) * (alarmMinutes / 60);
+  const baseAh    = standbyAh + alarmAh;
+  const requiredAh = +(baseAh * ageingFactor).toFixed(1);
+  const suggestedAh = nextCommercial(requiredAh);
+
+  return {
+    totalStandbyMa, totalAlarmMa,
+    standbyHours, alarmMinutes, ageingFactor,
+    requiredAh, suggestedAh, perPanel,
+  };
+}
+
 function clampPositive(n: number, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }

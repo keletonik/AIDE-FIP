@@ -1,14 +1,22 @@
 import Link from 'next/link';
+import { currentUser } from '@/lib/auth';
 
-const tiles = [
+const referenceTiles = [
   { href: '/standards',    title: 'Standards',     blurb: 'AS 1670 family, AS 1851 service, AS 3745 emergency planning. Paraphrased clauses; deep links into the knowledge base.' },
   { href: '/panels',       title: 'Panels',        blurb: 'Pertronic, Ampac, Notifier, Simplex, Vigilant MX1, Bosch, Hochiki, Tyco. Day-mode and engineer keystrokes.' },
   { href: '/battery',      title: 'Battery calc',  blurb: '24 h standby + 30 min alarm by default, with ageing factor. Suggests next commercial size up.' },
   { href: '/troubleshoot', title: 'Troubleshoot',  blurb: 'Symptom → ranked causes → remediation. Earth faults, charger faults, ASE faults, intermittents.' },
-  { href: '/products',     title: 'Products',      blurb: 'Normalised category vocabulary for product selection. Wires up to Flaro in V2.' },
+];
+const workflowTiles = [
+  { href: '/sites',        title: 'Sites',         blurb: 'Per-site panel register, defects, AS 1851 service records, brigade tests, cause-and-effect.' },
+  { href: '/defects',      title: 'Open defects',  blurb: 'Cross-site queue ranked by severity.' },
+  { href: '/projects',     title: 'Battery projects', blurb: 'Multi-panel battery sizing for buildings with more than one FIP.' },
 ];
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  const me = await currentUser();
   return (
     <div className="space-y-8">
       <section className="space-y-2">
@@ -19,21 +27,28 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="grid sm:grid-cols-2 gap-3">
-        {tiles.map(t => (
-          <Link
-            key={t.href}
-            href={t.href}
-            className="card p-4 no-underline hover:border-link transition-colors"
-          >
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 className="text-lg font-semibold text-head">{t.title}</h2>
-              <span className="text-muted text-sm">→</span>
-            </div>
-            <p className="text-sm text-muted mt-1">{t.blurb}</p>
-          </Link>
-        ))}
+      {me && (
+        <section>
+          <h2 className="text-sm uppercase tracking-wide text-muted mb-2">Workflow</h2>
+          <div className="grid sm:grid-cols-3 gap-3">
+            {workflowTiles.map(t => <Tile key={t.href} {...t} />)}
+          </div>
+        </section>
+      )}
+
+      <section>
+        <h2 className="text-sm uppercase tracking-wide text-muted mb-2">Reference</h2>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {referenceTiles.map(t => <Tile key={t.href} {...t} />)}
+        </div>
       </section>
+
+      {!me && (
+        <section className="card p-4 text-sm text-muted">
+          <strong className="text-head">Sign in</strong> to manage sites, log defects with photos, run AS 1851
+          services, edit cause-and-effect matrices and roll up battery sizing across multiple FIPs.
+        </section>
+      )}
 
       <section className="card p-4 text-sm text-muted">
         <strong className="text-head">Note.</strong> AS standards are copyright Standards Australia and panel
@@ -41,5 +56,17 @@ export default function Home() {
         out to authoritative sources for the verbatim text.
       </section>
     </div>
+  );
+}
+
+function Tile({ href, title, blurb }: { href: string; title: string; blurb: string }) {
+  return (
+    <Link href={href} className="card p-4 no-underline hover:border-link transition-colors">
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="text-lg font-semibold text-head">{title}</h3>
+        <span className="text-muted text-sm">→</span>
+      </div>
+      <p className="text-sm text-muted mt-1">{blurb}</p>
+    </Link>
   );
 }

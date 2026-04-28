@@ -52,6 +52,15 @@ a:hover { text-decoration: underline; }
 .tag-ok   { background: #14321f; color: #8de0a8; }
 .tag-amber{ background: #3a2e10; color: #f3c879; }
 
+@media print {
+  html, body { background: white !important; color: black !important; }
+  .card { background: white !important; border: 1px solid #ccc !important; }
+  .tag, .kbd { background: #eee !important; color: black !important; border-color: #ccc !important; }
+  table { font-size: 11px; }
+  th, td { border-bottom: 1px solid #ccc; }
+  th { color: #444 !important; }
+}
+
 input, select, textarea {
   background: theme('colors.slate');
   border: 1px solid theme('colors.line');
