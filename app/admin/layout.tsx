@@ -8,6 +8,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link className="btn" href="/admin/debug">Debug</Link>
         <Link className="btn" href="/admin/health">Health</Link>
         <Link className="btn" href="/admin/users">Users</Link>
+        <Link className="btn" href="/brand">Brand</Link>
       </nav>
       {children}
     </div>

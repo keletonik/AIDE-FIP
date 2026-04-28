@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Nav } from '@/components/Nav';
 import { RequestTimer } from '@/components/RequestTimer';
+import { Splash } from '@/components/Splash';
 
 export const metadata: Metadata = {
   title: { default: 'AIDE-FIP', template: '%s · AIDE-FIP' },
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="min-h-dvh">
+        <Splash />
         <RequestTimer />
         <Nav />
         <main className="max-w-6xl mx-auto px-4 py-6">
