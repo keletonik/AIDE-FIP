@@ -1,0 +1,176 @@
+[
+  {
+    "slug": "pertronic-f100",
+    "name": "Pertronic F100",
+    "vendor": "Pertronic",
+    "family": "F-Series",
+    "loops_max": 1,
+    "kb_slug": "pertronic-f100",
+    "notes": "Compact single-loop addressable FIP. Common on small commercial fitouts and tenancy work.",
+    "commands": [
+      { "context": "Day mode",  "label": "Acknowledge alarm",       "keystrokes": "Silence (yellow) → enter passcode if locked" },
+      { "context": "Day mode",  "label": "Reset panel",             "keystrokes": "Reset (red) → confirm" },
+      { "context": "Engineer", "label": "Enter engineer menu",      "keystrokes": "Menu → 9 → passcode" },
+      { "context": "Engineer", "label": "Disable a device",         "keystrokes": "Menu → Disable → Device → enter address" },
+      { "context": "Engineer", "label": "Walk test",                "keystrokes": "Menu → Test → Zone → select zone" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 180, "source": "F100 design manual figure (verify on site)" },
+      { "mode": "alarm",   "current_ma": 950, "source": "F100 design manual figure (verify on site)" }
+    ]
+  },
+  {
+    "slug": "pertronic-f120",
+    "name": "Pertronic F120",
+    "vendor": "Pertronic",
+    "family": "F-Series",
+    "loops_max": 4,
+    "kb_slug": "pertronic-f120",
+    "notes": "Multi-loop addressable. Up to four loops, supports cause-and-effect via PFS configuration tool.",
+    "commands": [
+      { "context": "Day mode",  "label": "Acknowledge alarm",       "keystrokes": "Silence → passcode" },
+      { "context": "Day mode",  "label": "Reset panel",             "keystrokes": "Reset → confirm" },
+      { "context": "Engineer", "label": "View loop status",         "keystrokes": "Menu → 4 → Loop n" },
+      { "context": "Engineer", "label": "Isolate output",           "keystrokes": "Menu → Isolate → Output → number" },
+      { "context": "Engineer", "label": "Print event log",          "keystrokes": "Menu → Print → History → range" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 320, "source": "F120 design manual figure (verify on site)" },
+      { "mode": "alarm",   "current_ma": 1500, "source": "F120 design manual figure (verify on site)" }
+    ]
+  },
+  {
+    "slug": "ampac-firefinder-plus",
+    "name": "Ampac FireFinder PLUS",
+    "vendor": "Ampac",
+    "family": "FireFinder",
+    "loops_max": 8,
+    "kb_slug": "ampac-firefinder-plus",
+    "notes": "Halma-owned mid-large addressable platform. Wide install base across NSW.",
+    "commands": [
+      { "context": "Day mode",  "label": "Silence sounders",        "keystrokes": "Silence → confirm" },
+      { "context": "Day mode",  "label": "Reset",                   "keystrokes": "Reset → enter access code" },
+      { "context": "Engineer", "label": "Open commissioning menu",  "keystrokes": "Function → Engineer → code" },
+      { "context": "Engineer", "label": "Disable a zone",           "keystrokes": "Disable → Zone → number → confirm" },
+      { "context": "Engineer", "label": "Loop diagnostics",         "keystrokes": "Function → Diagnostics → Loop → number" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 420, "source": "FireFinder PLUS commissioning data (verify on site)" },
+      { "mode": "alarm",   "current_ma": 2400, "source": "FireFinder PLUS commissioning data (verify on site)" }
+    ]
+  },
+  {
+    "slug": "notifier-id3000",
+    "name": "Notifier ID3000",
+    "vendor": "Notifier (Honeywell)",
+    "family": "ID3000",
+    "loops_max": 8,
+    "kb_slug": "notifier-id3000",
+    "notes": "Honeywell intelligent panel; common on larger commercial sites with CBE programming.",
+    "commands": [
+      { "context": "Day mode",  "label": "Silence",                 "keystrokes": "Silence Buzzer → Silence Alarm" },
+      { "context": "Day mode",  "label": "Reset",                   "keystrokes": "Reset → enter level 2 code" },
+      { "context": "Engineer", "label": "Enter engineering",        "keystrokes": "Menu → Setup → Engineer → code" },
+      { "context": "Engineer", "label": "View device analogue",     "keystrokes": "Menu → Status → Loop → Address" },
+      { "context": "Engineer", "label": "Edit cause and effect",    "keystrokes": "Use PC tool — panel only allows view of CBE rules" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 380, "source": "ID3000 installation manual (verify on site)" },
+      { "mode": "alarm",   "current_ma": 2200, "source": "ID3000 installation manual (verify on site)" }
+    ]
+  },
+  {
+    "slug": "simplex-4100es",
+    "name": "Simplex 4100ES",
+    "vendor": "Simplex (Johnson Controls)",
+    "family": "4100ES",
+    "loops_max": 32,
+    "kb_slug": "simplex-4100es",
+    "notes": "Large building / hospital deployments. Uses TrueAlarm sensing and ES Net for networking.",
+    "commands": [
+      { "context": "Day mode",  "label": "Acknowledge",             "keystrokes": "Ack key → Alarm List → select" },
+      { "context": "Day mode",  "label": "Reset system",            "keystrokes": "System Reset → confirm" },
+      { "context": "Engineer", "label": "Login level 2",            "keystrokes": "Menu → Login → user → passcode" },
+      { "context": "Engineer", "label": "Disable point",            "keystrokes": "Menu → Disable → Point → address" },
+      { "context": "Engineer", "label": "Walk test",                "keystrokes": "Menu → Test → Walk → group" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 1100, "source": "4100ES battery calc worksheet (verify on site)" },
+      { "mode": "alarm",   "current_ma": 4800, "source": "4100ES battery calc worksheet (verify on site)" }
+    ]
+  },
+  {
+    "slug": "vigilant-mx1",
+    "name": "Vigilant MX1",
+    "vendor": "Vigilant (Johnson Controls)",
+    "family": "MX1",
+    "loops_max": 8,
+    "kb_slug": "vigilant-mx1",
+    "notes": "Australian-designed panel. Very common on NSW commercial and residential aged-care sites.",
+    "commands": [
+      { "context": "Day mode",  "label": "Silence sounders",        "keystrokes": "Silence Sounders" },
+      { "context": "Day mode",  "label": "Reset",                   "keystrokes": "Reset → confirm" },
+      { "context": "Engineer", "label": "Engineer login",           "keystrokes": "Menu → Login → enter PIN" },
+      { "context": "Engineer", "label": "Isolate device",           "keystrokes": "Menu → Isolate → Point → address" },
+      { "context": "Engineer", "label": "Print event log",          "keystrokes": "Menu → Log → Print → range" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 350, "source": "MX1 commissioning manual (verify on site)" },
+      { "mode": "alarm",   "current_ma": 1800, "source": "MX1 commissioning manual (verify on site)" }
+    ]
+  },
+  {
+    "slug": "bosch-fpa-1200",
+    "name": "Bosch FPA-1200",
+    "vendor": "Bosch",
+    "family": "AVENAR / FPA",
+    "loops_max": 4,
+    "kb_slug": "bosch-fpa-1200",
+    "notes": "Compact MX panel. Common on smaller commercial and industrial sites.",
+    "commands": [
+      { "context": "Day mode",  "label": "Silence",                 "keystrokes": "Silence Buzzer key" },
+      { "context": "Day mode",  "label": "Reset",                   "keystrokes": "Reset key → confirm" },
+      { "context": "Engineer", "label": "Login level 3",            "keystrokes": "Menu → Login → passcode" },
+      { "context": "Engineer", "label": "Block element",            "keystrokes": "Menu → Block → Element → number" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 240, "source": "FPA-1200 install manual (verify on site)" },
+      { "mode": "alarm",   "current_ma": 1300, "source": "FPA-1200 install manual (verify on site)" }
+    ]
+  },
+  {
+    "slug": "hochiki-firenet",
+    "name": "Hochiki FireNET",
+    "vendor": "Hochiki",
+    "family": "FireNET",
+    "loops_max": 8,
+    "kb_slug": "hochiki-firenet",
+    "notes": "Networkable addressable panel using ESP protocol.",
+    "commands": [
+      { "context": "Day mode",  "label": "Silence",                 "keystrokes": "Silence Sounders → confirm" },
+      { "context": "Day mode",  "label": "Reset",                   "keystrokes": "Reset → enter code" },
+      { "context": "Engineer", "label": "View loop devices",        "keystrokes": "Menu → 3 (Service) → Loop → number" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 300, "source": "FireNET installation guide (verify on site)" },
+      { "mode": "alarm",   "current_ma": 1700, "source": "FireNET installation guide (verify on site)" }
+    ]
+  },
+  {
+    "slug": "tyco-bc200",
+    "name": "Tyco BC200",
+    "vendor": "Tyco",
+    "family": "BC",
+    "loops_max": 2,
+    "kb_slug": "tyco-bc200",
+    "notes": "Brigade-connect panel for legacy retrofits. Limited new installs; commonly inherited.",
+    "commands": [
+      { "context": "Day mode",  "label": "Silence",                 "keystrokes": "Silence" },
+      { "context": "Day mode",  "label": "Reset",                   "keystrokes": "Reset → key turn" }
+    ],
+    "battery_loads": [
+      { "mode": "standby", "current_ma": 260, "source": "BC200 service manual (verify on site)" },
+      { "mode": "alarm",   "current_ma": 1400, "source": "BC200 service manual (verify on site)" }
+    ]
+  }
+]

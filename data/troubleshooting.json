@@ -1,0 +1,53 @@
+[
+  {
+    "slug": "earth-fault-on-loop",
+    "title": "Earth fault on a single loop",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Water ingress at a detector base or MCP backbox in a wet area",   "remediation": "Walk the loop with a megger from the FIP outwards. Half the loop, retest. Pull the suspect base, dry, replace gasket." },
+      { "rank": 2, "cause": "Cable nicked during ceiling works (recent trades on site)",         "remediation": "Check last work order. Inspect cables in the suspected zone for staple / screw damage." },
+      { "rank": 3, "cause": "Failed isolator module shorting screen to earth",                   "remediation": "Lift each isolator in turn from common, retest earth resistance after each." },
+      { "rank": 4, "cause": "FIP earth bond loose or carrying transient from another service",   "remediation": "Verify FIP earth termination torque; check no other equipment is sharing the bond." }
+    ]
+  },
+  {
+    "slug": "panel-shows-charger-fault",
+    "title": "Charger fault on FIP",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "One battery in series has failed (open or shorted cell)",            "remediation": "Disconnect batteries, measure each individually under no load then under 2A load. Replace as a matched pair." },
+      { "rank": 2, "cause": "Charger fuse blown",                                                 "remediation": "Check inline fuse / PCB fuse on charger output. Replace like-for-like." },
+      { "rank": 3, "cause": "Mains supply dropped overnight, charger not yet recovered",          "remediation": "Check mains LED and 230 V at terminals. Allow charge cycle, retest in 4 hours." },
+      { "rank": 4, "cause": "Ambient temperature outside charger range",                          "remediation": "Many panels derate the charger above 35 °C. Improve cupboard ventilation." }
+    ]
+  },
+  {
+    "slug": "intermittent-zone-alarm",
+    "title": "Intermittent alarm on the same zone",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Steam, dust or insects entering one detector",                       "remediation": "Identify highest-analogue device on the zone; clean head, fit insect screen if applicable." },
+      { "rank": 2, "cause": "Detector at end of life (>10 years on photoelectric)",               "remediation": "Check install date label. Replace per AS 1670.1 / manufacturer recommendation." },
+      { "rank": 3, "cause": "Loop voltage sag — too many devices, marginal cable",                "remediation": "Measure loop voltage at far end during alarm; review loop loading." }
+    ]
+  },
+  {
+    "slug": "ase-fault",
+    "title": "ASE fault to brigade",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Telstra / NBN line carrier issue at premises",                       "remediation": "Test ASE line; raise carrier fault if line unavailable. Don't rebuild ASE first." },
+      { "rank": 2, "cause": "ASE polled by monitoring centre showing comm fail",                  "remediation": "Call monitoring centre; confirm last successful poll time before site work." },
+      { "rank": 3, "cause": "FIP relay output to ASE not pulling — output fuse / config",         "remediation": "Force the brigade output via engineer menu; verify ASE input changes state." }
+    ]
+  },
+  {
+    "slug": "mains-failure-frequent",
+    "title": "Frequent mains failure events on FIP",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Sub-board RCD nuisance tripping",                                    "remediation": "Move FIP supply to a dedicated RCBO labelled 'Fire — do not switch'." },
+      { "rank": 2, "cause": "Power supply transformer / PSU failing under load",                  "remediation": "Measure PSU output at standby and during alarm. Replace if drops below spec." }
+    ]
+  }
+]

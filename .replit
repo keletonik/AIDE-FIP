@@ -1,0 +1,30 @@
+run = "npm run dev"
+entrypoint = "app/page.tsx"
+modules = ["nodejs-20", "web"]
+hidden = [".next", "node_modules", "data/aide.db", "data/aide.db-journal"]
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+deploymentTarget = "cloudrun"
+build = ["npm", "run", "build"]
+run = ["npm", "run", "start"]
+ignorePorts = false
+
+[env]
+NEXT_TELEMETRY_DISABLED = "1"
+NODE_ENV = "development"
+PORT = "3000"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[languages]
+
+[languages.typescript]
+pattern = "**/{*.ts,*.tsx}"
+
+[languages.typescript.languageServer]
+start = "typescript-language-server --stdio"

@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  background: theme('colors.ink');
+  color: theme('colors.body');
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Bigger tap targets — gloves on, holding a torch. */
+button, [role="button"], a.btn {
+  min-height: 44px;
+}
+
+a { color: theme('colors.link'); }
+a:hover { text-decoration: underline; }
+
+.card {
+  background: theme('colors.slate');
+  border: 1px solid theme('colors.line');
+  border-radius: 10px;
+}
+
+.kbd {
+  font-family: theme('fontFamily.mono');
+  background: theme('colors.line');
+  color: theme('colors.head');
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid #333a45;
+  font-size: 0.85em;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: theme('colors.line');
+  color: theme('colors.muted');
+}
+
+.tag-warn { background: #3a1f17; color: #f4a08e; }
+.tag-ok   { background: #14321f; color: #8de0a8; }
+.tag-amber{ background: #3a2e10; color: #f3c879; }
+
+input, select, textarea {
+  background: theme('colors.slate');
+  border: 1px solid theme('colors.line');
+  border-radius: 8px;
+  color: theme('colors.head');
+  padding: 10px 12px;
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid theme('colors.link');
+  outline-offset: -1px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 8px;
+  background: theme('colors.line'); color: theme('colors.head');
+  border: 1px solid #2f343d;
+  font-weight: 500;
+}
+.btn:hover { background: #2f343d; text-decoration: none; }
+.btn-primary {
+  background: theme('colors.link'); color: #0b0d10; border-color: theme('colors.link');
+}
+.btn-primary:hover { filter: brightness(0.95); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 8px 10px; border-bottom: 1px solid theme('colors.line'); text-align: left; vertical-align: top; }
+th { color: theme('colors.muted'); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
