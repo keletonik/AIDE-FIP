@@ -24,6 +24,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (files.length === 0) return NextResponse.json({ error: 'no photo files' }, { status: 400 });
 
   const saved: number[] = [];
+  const rejected: { name: string; type: string; reason: string }[] = [];
   for (const f of files) {
     try {
       const out = await saveImage('defects', String(defectId), f);
@@ -32,9 +33,17 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       });
       saved.push(id);
     } catch (e) {
-      warn('api/defects/photos', 'rejected file', { name: f.name, type: f.type, error: e instanceof Error ? e.message : String(e) });
+      const reason = e instanceof Error ? e.message : String(e);
+      rejected.push({ name: f.name, type: f.type, reason });
+      warn('api/defects/photos', 'rejected file', { name: f.name, type: f.type, reason });
     }
   }
-  await audit({ action: 'defect.photos.upload', target: String(defectId), payload: { count: saved.length } });
-  return NextResponse.json({ ok: true, ids: saved });
+  if (saved.length === 0) {
+    // Every file was rejected — return 400 so the client knows nothing
+    // landed. Previously this returned 200 with an empty ids array, which
+    // looked like success.
+    return NextResponse.json({ error: 'no valid photos', rejected }, { status: 400 });
+  }
+  await audit({ action: 'defect.photos.upload', target: String(defectId), payload: { count: saved.length, rejected: rejected.length } });
+  return NextResponse.json({ ok: true, ids: saved, rejected });
 }

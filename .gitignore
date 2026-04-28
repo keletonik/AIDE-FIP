@@ -12,6 +12,7 @@ data/aide.db
 data/aide.db-journal
 data/aide.db-shm
 data/aide.db-wal
+data/uploads/
 *.log
 .DS_Store
 .replit_session
