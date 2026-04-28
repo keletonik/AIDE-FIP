@@ -145,6 +145,14 @@ function seed() {
   tx();
   h.pragma('foreign_keys = ON');
 
+  // Bootstrap admin from Replit Secrets if requested. This makes the
+  // first-deploy story on Replit a single click: set the secret, and the
+  // admin user appears the first time `npm run build` runs the seeder.
+  // Safe to re-run — createUser() is no-op if the email already exists,
+  // so subsequent builds don't duplicate or overwrite the password. Use
+  // `npm run user:create` to rotate.
+  bootstrapFromEnv(h);
+
   const counts = {
     panels:    (h.prepare('SELECT COUNT(*) c FROM panels').get() as { c: number }).c,
     commands:  (h.prepare('SELECT COUNT(*) c FROM panel_commands').get() as { c: number }).c,
@@ -155,8 +163,31 @@ function seed() {
     causes:    (h.prepare('SELECT COUNT(*) c FROM symptom_causes').get() as { c: number }).c,
     categories:(h.prepare('SELECT COUNT(*) c FROM product_categories').get() as { c: number }).c,
     templates: (h.prepare('SELECT COUNT(*) c FROM service_templates').get() as { c: number }).c,
+    users:     (h.prepare('SELECT COUNT(*) c FROM users').get() as { c: number }).c,
   };
   console.log('seed complete:', counts);
+}
+
+function bootstrapFromEnv(h: ReturnType<typeof db>) {
+  const username = process.env.AIDE_BOOTSTRAP_USERNAME?.trim();
+  const password = process.env.AIDE_BOOTSTRAP_PASSWORD?.trim();
+  if (!username || !password) return;
+
+  const name  = process.env.AIDE_BOOTSTRAP_NAME?.trim() || username;
+  const email = process.env.AIDE_BOOTSTRAP_EMAIL?.trim() || `${username.toLowerCase()}@aide-fip.local`;
+
+  const existing = h.prepare(
+    `SELECT id FROM users WHERE LOWER(username) = LOWER(?) OR LOWER(email) = LOWER(?)`,
+  ).get(username, email) as { id: number } | undefined;
+  if (existing) {
+    console.log(`bootstrap user already exists (id=${existing.id} ${username}); leaving in place`);
+    return;
+  }
+
+  // Lazy-require to avoid pulling auth helpers into seeder graph until needed.
+  const { createUser } = require('../lib/auth') as typeof import('../lib/auth');
+  const u = createUser({ email, username, password, name, role: 'admin' });
+  console.log(`bootstrap admin created: id=${u.id} ${u.username} <${u.email}>`);
 }
 
 seed();

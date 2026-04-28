@@ -11,6 +11,8 @@
     "typecheck": "tsc --noEmit",
     "db:seed": "tsx scripts/seed.ts",
     "db:reset": "rm -f data/aide.db && npm run db:seed",
+    "db:backup": "tsx scripts/backup.ts",
+    "db:restore": "tsx scripts/restore.ts",
     "user:create": "tsx scripts/create-user.ts",
     "audit:check": "tsx scripts/run-audit.ts",
     "postinstall": "mkdir -p data && touch data/.keep"

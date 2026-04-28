@@ -13,6 +13,7 @@ data/aide.db-journal
 data/aide.db-shm
 data/aide.db-wal
 data/uploads/
+data/backups/
 *.log
 .DS_Store
 .replit_session
