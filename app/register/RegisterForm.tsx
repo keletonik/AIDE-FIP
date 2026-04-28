@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 export function RegisterForm({ bootstrap }: { bootstrap: boolean }) {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState<'admin' | 'tech' | 'viewer'>('tech');
@@ -17,7 +18,11 @@ export function RegisterForm({ bootstrap }: { bootstrap: boolean }) {
       const r = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ email, password, name, role: bootstrap ? undefined : role }),
+        body: JSON.stringify({
+          email, password, name,
+          username: username || undefined,
+          role: bootstrap ? undefined : role,
+        }),
       });
       if (!r.ok) {
         const d = await r.json().catch(() => ({}));
@@ -37,6 +42,10 @@ export function RegisterForm({ bootstrap }: { bootstrap: boolean }) {
       <label className="block space-y-1">
         <span className="block text-sm text-muted">Name</span>
         <input required value={name} onChange={(e) => setName(e.target.value)} />
+      </label>
+      <label className="block space-y-1">
+        <span className="block text-sm text-muted">Username (optional, used for sign-in)</span>
+        <input autoComplete="username" pattern="[A-Za-z0-9._-]{2,40}" value={username} onChange={(e) => setUsername(e.target.value)} />
       </label>
       <label className="block space-y-1">
         <span className="block text-sm text-muted">Email</span>

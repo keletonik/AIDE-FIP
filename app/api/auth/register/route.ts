@@ -8,6 +8,7 @@ export const runtime = 'nodejs';
 
 const schema = z.object({
   email: z.string().email(),
+  username: z.string().regex(/^[A-Za-z0-9._-]{2,40}$/).optional(),
   password: z.string().min(8),
   name: z.string().min(1),
   role: z.enum(['admin', 'tech', 'viewer']).optional(),
@@ -38,7 +39,13 @@ export async function POST(req: Request) {
 
   let user;
   try {
-    user = createUser(parsed.data.email, parsed.data.password, parsed.data.name, role);
+    user = createUser({
+      email: parsed.data.email,
+      username: parsed.data.username ?? null,
+      password: parsed.data.password,
+      name: parsed.data.name,
+      role,
+    });
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : 'failed' }, { status: 400 });
   }

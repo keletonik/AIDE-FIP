@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export function LoginForm() {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,7 +15,7 @@ export function LoginForm() {
       const r = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identifier, password }),
       });
       if (!r.ok) {
         const d = await r.json().catch(() => ({}));
@@ -33,8 +33,8 @@ export function LoginForm() {
   return (
     <form onSubmit={submit} className="space-y-3">
       <label className="block space-y-1">
-        <span className="block text-sm text-muted">Email</span>
-        <input type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <span className="block text-sm text-muted">Username or email</span>
+        <input autoComplete="username" required value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
       </label>
       <label className="block space-y-1">
         <span className="block text-sm text-muted">Password</span>

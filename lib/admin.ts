@@ -1,16 +1,22 @@
 import { headers } from 'next/headers';
+import { currentUser } from './auth';
 
-// Tiny shared-secret gate for the audit / debug dashboards. Anyone with
-// the ADMIN_KEY can read; in practice the deployment puts this behind
-// Replit's auth proxy or Cloudflare Access too.
+// Admin pages accept either of two credentials:
+//   1. A signed-in user with role === 'admin' (the normal path)
+//   2. The ADMIN_KEY shared secret via ?key=… or x-admin-key header
+//      (break-glass for when sessions are broken or DB is being inspected
+//      directly from a separate process)
 //
-// Two ways to authenticate:
-//   - ?key=<value> on the URL (handy for direct GETs)
-//   - x-admin-key request header (used by client-side fetches)
+// In dev, with no ADMIN_KEY set and no user, the gate is open. In prod,
+// without either credential, the gate is locked.
 
 export async function isAdmin(req?: Request): Promise<boolean> {
+  const me = await currentUser().catch(() => null);
+  if (me?.role === 'admin') return true;
+
   const expected = process.env.ADMIN_KEY;
-  if (!expected) return process.env.NODE_ENV !== 'production'; // dev: open
+  if (!expected) return process.env.NODE_ENV !== 'production';
+
   if (req) {
     const header = req.headers.get('x-admin-key');
     if (header && safeEq(header, expected)) return true;

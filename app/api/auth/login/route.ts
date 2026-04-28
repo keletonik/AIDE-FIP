@@ -7,21 +7,29 @@ import { warn } from '@/lib/debugger';
 
 export const runtime = 'nodejs';
 
+// Login accepts either a username or an email — auth picks the right
+// lookup based on whether the value contains an "@". Older clients that
+// still post `email` keep working: we coerce to the new field name.
 const schema = z.object({
-  email: z.string().email(),
+  identifier: z.string().min(1),
   password: z.string().min(1),
 });
 
 export async function POST(req: Request) {
-  const body = await req.json().catch(() => ({}));
+  const raw = await req.json().catch(() => ({}));
+  const body = (raw && typeof raw === 'object' && raw !== null && 'identifier' in raw)
+    ? raw
+    : (raw && typeof raw === 'object' && raw !== null && 'email' in raw)
+      ? { ...raw, identifier: (raw as { email: string }).email }
+      : raw;
   const parsed = schema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: 'invalid' }, { status: 400 });
 
-  const user = authenticate(parsed.data.email, parsed.data.password);
+  const user = authenticate(parsed.data.identifier, parsed.data.password);
   if (!user) {
-    warn('auth/login', 'failed', { email: parsed.data.email });
-    await audit({ action: 'auth.login.fail', target: parsed.data.email });
-    return NextResponse.json({ error: 'invalid email or password' }, { status: 401 });
+    warn('auth/login', 'failed', { identifier: parsed.data.identifier });
+    await audit({ action: 'auth.login.fail', target: parsed.data.identifier });
+    return NextResponse.json({ error: 'invalid username or password' }, { status: 401 });
   }
 
   const { token, expires } = startSession(user.id);

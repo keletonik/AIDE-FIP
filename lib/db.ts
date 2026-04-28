@@ -45,6 +45,7 @@ function migrate(h: Database.Database) {
   const steps: Array<{ v: number; sql: string }> = [
     { v: 1, sql: V1 },
     { v: 2, sql: V2 },
+    { v: 3, sql: V3 },
   ];
 
   const apply = h.transaction((s: { v: number; sql: string }) => {
@@ -310,6 +311,14 @@ const V2 = `
     extra_alarm_ma     REAL NOT NULL DEFAULT 0
   );
   CREATE INDEX idx_bpp_project ON battery_project_panels(project_id);
+`;
+
+// V3 — adds an optional username on users so techs can sign in with a
+// short handle ("Casper") instead of an email. Username is unique when
+// present; nulls are still allowed for legacy rows.
+const V3 = `
+  ALTER TABLE users ADD COLUMN username TEXT;
+  CREATE UNIQUE INDEX ux_users_username ON users(username) WHERE username IS NOT NULL;
 `;
 
 // Convenience wrappers used across server components and route handlers.

@@ -13,7 +13,7 @@ export function UserPill({ user }: { user: User | null }) {
   }
   return (
     <div className="flex items-center gap-2 text-sm">
-      <span className="text-muted hidden sm:inline">{user.name}</span>
+      <span className="text-muted hidden sm:inline">{user.username || user.name}</span>
       <span className="tag">{user.role}</span>
       <button onClick={logout} className="btn">Sign out</button>
     </div>
