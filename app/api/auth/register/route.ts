@@ -3,14 +3,15 @@ import { cookies } from 'next/headers';
 import { z } from 'zod';
 import { createUser, SESSION_COOKIE, startSession, userCount, currentUser } from '@/lib/auth';
 import { audit } from '@/lib/audit';
+import { rateLimit, reapIfDue, clientIp } from '@/lib/ratelimit';
 
 export const runtime = 'nodejs';
 
 const schema = z.object({
-  email: z.string().email(),
+  email: z.string().email().max(200),
   username: z.string().regex(/^[A-Za-z0-9._-]{2,40}$/).optional(),
-  password: z.string().min(8),
-  name: z.string().min(1),
+  password: z.string().min(12).max(200),
+  name: z.string().min(1).max(120),
   role: z.enum(['admin', 'tech', 'viewer']).optional(),
 });
 
@@ -18,6 +19,13 @@ const schema = z.object({
 //   1. First user — anyone can register, becomes admin. Bootstrap path.
 //   2. After that — only an authenticated admin can create accounts.
 export async function POST(req: Request) {
+  reapIfDue();
+  const gate = rateLimit(`register:${clientIp(req)}`, 5, 15 * 60_000);
+  if (!gate.ok) {
+    return NextResponse.json({ error: 'too many attempts' }, {
+      status: 429, headers: { 'Retry-After': String(gate.resetSec) },
+    });
+  }
   const body = await req.json().catch(() => ({}));
   const parsed = schema.safeParse(body);
   if (!parsed.success) {

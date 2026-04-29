@@ -31,16 +31,27 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={submit} className="space-y-3">
-      <label className="block space-y-1">
+    <form onSubmit={submit} className="space-y-3" aria-busy={pending}>
+      <label htmlFor="login-id" className="block space-y-1">
         <span className="block text-sm text-muted">Username or email</span>
-        <input autoComplete="username" required value={identifier} onChange={(e) => setIdentifier(e.target.value)} />
+        <input
+          id="login-id" name="identifier" type="text"
+          inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false}
+          autoComplete="username" enterKeyHint="next" required
+          value={identifier} onChange={(e) => setIdentifier(e.target.value)}
+        />
       </label>
-      <label className="block space-y-1">
+      <label htmlFor="login-pw" className="block space-y-1">
         <span className="block text-sm text-muted">Password</span>
-        <input type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          id="login-pw" name="password" type="password"
+          autoComplete="current-password" enterKeyHint="go" required
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={error ? 'login-error' : undefined}
+          value={password} onChange={(e) => setPassword(e.target.value)}
+        />
       </label>
-      {error && <p className="text-warn text-sm">{error}</p>}
+      {error && <p id="login-error" role="alert" className="text-warn text-sm">{error}</p>}
       <button type="submit" disabled={pending} className="btn btn-primary w-full justify-center">
         {pending ? 'Signing in…' : 'Sign in'}
       </button>
