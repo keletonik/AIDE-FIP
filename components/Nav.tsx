@@ -6,13 +6,13 @@ const items = [
   { href: '/',             label: 'Home',          guard: 'open' },
   { href: '/sites',        label: 'Sites',         guard: 'auth' },
   { href: '/defects',      label: 'Defects',       guard: 'auth' },
+  { href: '/isolations',   label: 'Isolations',    guard: 'auth' },
   { href: '/projects',     label: 'Projects',      guard: 'auth' },
+  { href: '/triage',       label: 'Triage',        guard: 'open' },
   { href: '/standards',    label: 'Standards',     guard: 'open' },
   { href: '/panels',       label: 'Panels',        guard: 'open' },
-  { href: '/battery',      label: 'Battery',       guard: 'open' },
-  { href: '/loop-calc',    label: 'Loop',          guard: 'open' },
-  { href: '/spacing',      label: 'Spacing',       guard: 'open' },
-  { href: '/cables',       label: 'Cables',        guard: 'open' },
+  { href: '/tools',        label: 'Tools',         guard: 'open' },
+  { href: '/ce-templates', label: 'C&E',           guard: 'open' },
   { href: '/troubleshoot', label: 'Troubleshoot',  guard: 'open' },
 ] as const;
 

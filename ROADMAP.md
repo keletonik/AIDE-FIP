@@ -43,25 +43,54 @@ Outcome of the fire-panel domain-expert audit. Top-15 prioritised by
 - iOS / Android via Capacitor (from previous commit).
 - 18 audit criticals fixed.
 
-## v3 — high-value features (next, ranked)
+## v3 (this PR)
+
+Top-of-ranking items from v2 roadmap, shipped:
+
+- **`/triage` — after-hours triage mode.** Same troubleshooting data, dark
+  big-button single-thumb UI for on-call work. Symptom → top causes →
+  remediation, no brigade-dial.
+- **Active isolation register.** New DB table (V4 migration), CRUD per site
+  (`/sites/[id]/isolations`), cross-site dashboard (`/isolations`) with
+  overdue-since-N-hours flags (24 h amber, 72 h red). Site detail page
+  surfaces active count as a Stat tile. Closes the most-overlooked
+  liability gap in service work.
+- **`/coverage` — sounder dB + strobe candela coverage.** Free-field SPL
+  drop (inverse-square ÷ d²), energy-sum with ambient noise, target
+  headroom. Strobe AS 7240.23 / NFPA 72 ceiling Class C square-room
+  candela table.
+- **`/zone-check` — AS 1670.1 §4.3 zone-area sanity check.** Floor-by-
+  floor zone count plus mandatory split count (stairs / lifts / risers /
+  plant / roof void). Sleeping-risk class flag caps zone area at 1000 m².
+- **`/eol` — EOL resistor reference per panel.** Value, polarity, watts,
+  spur-handling notes for every panel in the registry. Multimeter
+  reading guidance (±5% at 20 °C floor).
+- **`/ce-templates` — cause-and-effect template library.** 6 building
+  classes (Class 5 office, 9a hospital, 7a car park, 2 residential, 9b
+  school, 8 warehouse). Zones × outputs × rules. Reference / starting
+  point — does NOT auto-program panels (anti-feature #7).
+- **`/tools` — field tools index.** Hub for battery, loop, spacing,
+  coverage, zone-check, cables, EOL.
+
+## v4 — next high-value features (ranked)
 
 | # | Item | Frequency | Saved | Effort | Notes |
 |---|---|---|---|---|---|
-| 1 | **After-hours / call-out triage mode** | Daily on-call | 0.5–1.5 h | M | Big-button site → symptom → top causes → MC contact. Dark mode, large hit-targets. |
-| 2 | **Walk-test logger with QR scan** | Weekly+ | 1.5–3 h | M | Tag each device tested, AS 1851 §6.4 sample-percentage tracker (10/25/100% rolling 12 months). |
-| 3 | **Active isolation register with leave-site safeguard** | Daily | prevents one $50k incident/yr | S | Live disabled-list across all sites; pre-leaving alert. |
-| 4 | **Battery sizing extension — multi-PSU / EWIS / ASE / sub-panel** | Weekly | 0.5–1.5 h | M | Currently single-FIP. Add EWIS amp + ASE + sub-panel rollup. |
-| 5 | **Defect-with-photo email/PDF to building owner** | Weekly | 0.5 h | M | One-click: defect, photo, severity, AS clause, due-by date. |
-| 6 | **Monthly + 6-monthly + annual service report PDF (signed)** | Monthly per site | 1–2 h | M | Branded, AS 1851 evidence. Signature on glass. |
-| 7 | **Cause-and-effect template library by building class** | Monthly | 2–4 h | M | Class 5 office, Class 9a hospital, Class 7a car park, Class 2 residential, Class 8 mining/warehouse, Class 9b school. |
-| 8 | **Brigade test logger with MC contact book + witness signature** | 6-monthly per site | 0.5 h | S | Pre-test checklist, witness sign on glass. |
-| 9 | **Sounder/strobe coverage calculator** | Monthly | 0.5–1 h | S | dB at distance, AS 7240.23 cd / coverage volume class. |
-| 10 | **Asset register with QR codes per device** | Compounds | 0.25 h/lookup | L | Capacitor barcode scanner + per-device record. |
-| 11 | **EOL resistor calculator** | Weekly | 0.25 h | S | Per-panel EOL value, polarity, parallel/series for spur conversions. |
-| 12 | **AS 1851 sample-percentage tracker** | Weekly | 0.25 h | S | Rolling-12-month sample target across detectors. |
-| 13 | **Zone-area check** | Per-job | 0.25 h | S | Confirms ≤ 2000 m² and one-zone-per-floor at handover. |
-| 14 | **Aspirating (VESDA) pipe-network sanity** | Monthly | 1 h | L | Transport time estimate, hole count, sensitivity class A/B/C. |
-| 15 | **Travel + timesheet capture** | Daily | 0.25 h | M | Start/stop on a job, optional GPS geofence. |
+| 1 | **Walk-test logger with QR scan** | Weekly+ | 1.5–3 h | M | Capacitor barcode scan; tag each device tested with time/initials/photo; AS 1851 §6.4 sample-percentage tracker (10/25/100% rolling 12 months). Needs new `walk_tests` + `walk_test_devices` tables. |
+| 2 | **Defect-with-photo email/PDF to building owner** | Weekly | 0.5 h | M | One-click: defect, photo, severity, AS clause, due-by date. Needs PDF lib + email transport (SMTP / SES). |
+| 3 | **Monthly + 6-monthly + annual service report PDF (signed)** | Monthly per site | 1–2 h | M | Branded, AS 1851 evidence. Signature-on-glass via Capacitor canvas plugin. |
+| 4 | **Battery sizing extension — multi-PSU / EWIS / ASE / sub-panel** | Weekly | 0.5–1.5 h | M | Existing battery_projects already supports multi-FIP; extend with EWIS amp + ASE + sub-panel as separate rows. |
+| 5 | **Brigade test logger w/ MC contact book + witness signature** | 6-monthly | 0.5 h | S | Existing brigade_tests table; add monitoring_centre contact directory + signature capture. |
+| 6 | **Asset register with QR codes per device** | Compounds | 0.25 h/lookup | L | Capacitor barcode scanner + new `assets` table. QR encodes device URL → opens record. |
+| 7 | **AS 1851 sample-percentage tracker** | Weekly | 0.25 h | S | Rolling-12-month sample target across detectors using existing detectors table + last_tested_at. |
+| 8 | **Aspirating (VESDA) pipe-network sanity** | Monthly | 1 h | L | Transport time estimate, hole count, sensitivity class A/B/C. AS 1670.1 §3.10. |
+| 9 | **Travel + timesheet capture** | Daily | 0.25 h | M | Start/stop on a job, optional GPS geofence. |
+| 10 | **Customer-facing dashboard** | Per-customer | 0.5–1 h | L | Building manager view: AFSS due, open defects with photos, last service date, contact tech. |
+| 11 | **Photo annotation** | Weekly | 0.25 h | M | Draw circle/arrow/callout on defect photos. Capacitor canvas. |
+| 12 | **EWIS layout helper** | Project | 1–2 h | M | AS 4428.16 / AS 1670.4 speaker spacing + watts/floor + STI estimate (estimate only — STI compliance still requires calibrated meter). |
+| 13 | **Voice notes per site** | Weekly | 0.25 h | S | Capacitor Voice Recorder plugin; attached to site or defect. |
+| 14 | **Stock / van inventory** | Daily | 0.1 h | M | "Used 2× SOH-220 today" → restock list. |
+| 15 | **Notification system** | Weekly | n/a | M | Capacitor Local Notifications for overdue services, expiring detectors, brigade test deadlines. |
 
 ## v4 — bigger lifts
 

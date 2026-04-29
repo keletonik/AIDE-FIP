@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "class-5-office",
+    "name": "Class 5 office (typical floor)",
+    "building_class": "Class 5",
+    "summary": "Standard commercial office floor with general fire detection, occupant warning, lift homing, AHU shutdown.",
+    "zones": ["Floor — open office", "Floor — lift lobby", "Floor — stair (per stair)", "Floor — comms cupboard"],
+    "outputs": ["General sounders this floor", "General sounders adjacent floors (alert)", "Lift homing", "AHU recirc shutdown", "Smoke door release", "Brigade signal"],
+    "rules": [
+      { "zone": "Open office",     "outputs": ["General sounders this floor", "AHU recirc shutdown", "Smoke door release", "Brigade signal"] },
+      { "zone": "Lift lobby",      "outputs": ["Lift homing", "General sounders this floor", "Brigade signal"] },
+      { "zone": "Stair",           "outputs": ["General sounders this floor", "Brigade signal"], "notes": "Stair detection often suppresses local sounders to prevent occupants going back to stair." },
+      { "zone": "Comms cupboard",  "outputs": ["AHU shutdown to comms cupboard", "Brigade signal"] }
+    ],
+    "as_refs": ["AS 1670.1 §3.22", "AS 1668.1 §6", "AS 1735.11"],
+    "notes": "Verify with the building's fire engineering report. Adjacent-floor alert is common in high-rise; confirm before commissioning."
+  },
+  {
+    "slug": "class-9a-hospital",
+    "name": "Class 9a hospital",
+    "building_class": "Class 9a",
+    "summary": "Healthcare with patient evacuation difficulty. Zone-by-zone investigation, no general evacuation.",
+    "zones": ["Ward — patient", "Ward — staff station", "Lift lobby", "Stair", "Plant room", "Mechanical riser"],
+    "outputs": ["Local alert tone (ward)", "Investigation alert (staff station, mimic, paging)", "AHU smoke spill", "Smoke door release", "Lift homing", "Brigade signal", "Compartment door close"],
+    "rules": [
+      { "zone": "Ward — patient",    "outputs": ["Local alert tone (ward)", "Investigation alert", "Brigade signal", "Compartment door close"], "notes": "No general evacuation tone. Smoke compartment doors close to limit spread." },
+      { "zone": "Ward — staff station", "outputs": ["Investigation alert", "Brigade signal"] },
+      { "zone": "Lift lobby",        "outputs": ["Lift homing", "Investigation alert", "Brigade signal"] },
+      { "zone": "Plant room",        "outputs": ["AHU smoke spill mode", "Investigation alert", "Brigade signal"] }
+    ],
+    "as_refs": ["AS 1670.1 §3.22", "AS 1668.1 §5", "AS 4083 (healthcare specific)"],
+    "notes": "Healthcare uses defend-in-place + horizontal evacuation. Coordinate with the hospital's fire engineer; this template is illustrative only."
+  },
+  {
+    "slug": "class-7a-carpark",
+    "name": "Class 7a car park",
+    "building_class": "Class 7a",
+    "summary": "Enclosed car park with heat detection and jet-fan ventilation tied to detection.",
+    "zones": ["Car park — heat (per fire compartment)", "Car park — sprinkler flow", "Plant — exhaust fan room"],
+    "outputs": ["Jet-fan run (this compartment)", "Smoke exhaust fan start", "General sounders", "AHU shutdown adjacent occupied levels", "Brigade signal"],
+    "rules": [
+      { "zone": "Car park heat",   "outputs": ["Jet-fan run (compartment)", "Smoke exhaust fan", "General sounders", "Brigade signal"] },
+      { "zone": "Sprinkler flow",  "outputs": ["General sounders", "AHU shutdown adjacent levels", "Brigade signal"], "notes": "Flow switch input often retarded 60–90 s to ride out pump-room cycling." }
+    ],
+    "as_refs": ["AS 1670.1 §3.22", "AS 1668.1 §5/6", "AS 2118.1 §5.7"],
+    "notes": "Smoke detection in car parks is generally unreliable (vehicle exhaust). Heat detection + sprinkler is the typical AU strategy."
+  },
+  {
+    "slug": "class-2-residential",
+    "name": "Class 2 residential — sole-occupancy units",
+    "building_class": "Class 2",
+    "summary": "Per-SOU isolation: alarm in one unit alerts that unit and brigade; common-area zones evacuate the building.",
+    "zones": ["SOU — kitchen heat / smoke", "Common — corridor", "Common — lobby", "Common — stair", "Plant — services"],
+    "outputs": ["SOU sounder (this unit only)", "Common-area sounders", "Brigade signal", "Smoke door release", "Lift homing"],
+    "rules": [
+      { "zone": "SOU detector",    "outputs": ["SOU sounder (this unit)", "Brigade signal"], "notes": "Single-unit alarm does NOT trigger common-area evac per AS 1670.1." },
+      { "zone": "Common corridor", "outputs": ["Common sounders", "Smoke door release", "Lift homing", "Brigade signal"] },
+      { "zone": "Stair",           "outputs": ["Common sounders", "Brigade signal"] }
+    ],
+    "as_refs": ["AS 1670.1 §3.22", "BCA Class 2/3 detection requirements"],
+    "notes": "Verify SOU isolation per the relevant BCA / fire engineering brief; some Class 3 sites are configured to evacuate-on-any-detector."
+  },
+  {
+    "slug": "class-9b-school",
+    "name": "Class 9b school",
+    "building_class": "Class 9b",
+    "summary": "Education building with phased / staged evacuation, after-hours mode.",
+    "zones": ["Classroom (per zone)", "Corridor", "Hall / assembly area", "Plant", "Stair"],
+    "outputs": ["General sounders (school-wide)", "AHU shutdown", "Brigade signal", "Office mimic"],
+    "rules": [
+      { "zone": "Classroom",       "outputs": ["General sounders (school-wide)", "AHU shutdown this zone", "Brigade signal", "Office mimic"] },
+      { "zone": "Hall",            "outputs": ["General sounders (school-wide)", "AHU shutdown hall", "Brigade signal"] }
+    ],
+    "as_refs": ["AS 1670.1 §3.22", "AS 1668.1 §6"],
+    "notes": "Day/night sensitivity profile important — school kitchens / labs trigger easily during teaching."
+  },
+  {
+    "slug": "class-8-warehouse",
+    "name": "Class 8 warehouse / mining surface",
+    "building_class": "Class 8",
+    "summary": "Large unbroken volume; heat / flame detection, ESFR sprinkler, dust-derated sensitivities.",
+    "zones": ["Storage — heat (per row aisle)", "Storage — flame detection", "Loading dock", "Office (within warehouse)", "Plant room"],
+    "outputs": ["General sounders + strobes", "Sprinkler pump start signal", "Smoke vent open", "AHU shutdown office", "Brigade signal"],
+    "rules": [
+      { "zone": "Storage heat",       "outputs": ["General sounders + strobes", "Smoke vent open", "Brigade signal"] },
+      { "zone": "Storage flame",      "outputs": ["General sounders + strobes", "Smoke vent open", "Brigade signal"] },
+      { "zone": "Sprinkler flow",     "outputs": ["General sounders + strobes", "Brigade signal"] }
+    ],
+    "as_refs": ["AS 1670.1 §3.22", "AS 2118.1 §5.7", "AS 1668.1 §5"],
+    "notes": "High-bay storage typically uses ESFR sprinkler — detection is supplementary. Coordinate with sprinkler designer on flow-switch retard."
+  }
+]
