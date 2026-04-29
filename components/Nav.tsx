@@ -10,6 +10,9 @@ const items = [
   { href: '/standards',    label: 'Standards',     guard: 'open' },
   { href: '/panels',       label: 'Panels',        guard: 'open' },
   { href: '/battery',      label: 'Battery',       guard: 'open' },
+  { href: '/loop-calc',    label: 'Loop',          guard: 'open' },
+  { href: '/spacing',      label: 'Spacing',       guard: 'open' },
+  { href: '/cables',       label: 'Cables',        guard: 'open' },
   { href: '/troubleshoot', label: 'Troubleshoot',  guard: 'open' },
 ] as const;
 

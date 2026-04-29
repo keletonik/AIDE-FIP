@@ -11,6 +11,17 @@
     ]
   },
   {
+    "slug": "loop-short-circuit",
+    "title": "Loop short circuit (short fault)",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Crushed cable inside ceiling void — usually behind a bulkhead or near a recently moved AC unit", "remediation": "Walk the loop with a megger and TDR. Check known compression points (slab penetrations, bulkheads, light cans). Replace the damaged section." },
+      { "rank": 2, "cause": "Two conductors touching inside a junction box with poor terminations", "remediation": "Open suspected JBs in the order the loop runs. Look for stripped insulation and hot spots." },
+      { "rank": 3, "cause": "A failed loop device shorted across +/- internally",                  "remediation": "Bisect the loop at the nearest isolator. Whichever half clears the fault contains the failed device. Continue bisecting." },
+      { "rank": 4, "cause": "Sounder / strobe wired to loop powered base instead of dedicated SCI", "remediation": "Verify the device wiring matches the cause-and-effect. Move sounders off the SLC if the protocol forbids it." }
+    ]
+  },
+  {
     "slug": "panel-shows-charger-fault",
     "title": "Charger fault on FIP",
     "panel_filter": null,
@@ -22,13 +33,45 @@
     ]
   },
   {
+    "slug": "battery-load-test-fail",
+    "title": "Battery load test failed (AS 1851 annual)",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Battery beyond design life (typically 4–5 years for VRLA SLA)",      "remediation": "Replace as a matched pair. Document install date on label and in service record." },
+      { "rank": 2, "cause": "Bank size undersized for current panel load (devices added after install)", "remediation": "Re-run battery sizing using current loop loading + extras (mimic, ASE, sounders). If under-sized, upsize or remove load." },
+      { "rank": 3, "cause": "Charger not floating at correct voltage (high or low)",              "remediation": "Measure float voltage with a calibrated DMM (~13.6–13.8 V at 25 °C per battery). Adjust or replace charger card." },
+      { "rank": 4, "cause": "Brief mains drop during the test invalidating it",                   "remediation": "Re-run the test on a stable power day; record start/end times." }
+    ]
+  },
+  {
     "slug": "intermittent-zone-alarm",
     "title": "Intermittent alarm on the same zone",
     "panel_filter": null,
     "causes": [
       { "rank": 1, "cause": "Steam, dust or insects entering one detector",                       "remediation": "Identify highest-analogue device on the zone; clean head, fit insect screen if applicable." },
       { "rank": 2, "cause": "Detector at end of life (>10 years on photoelectric)",               "remediation": "Check install date label. Replace per AS 1670.1 / manufacturer recommendation." },
-      { "rank": 3, "cause": "Loop voltage sag — too many devices, marginal cable",                "remediation": "Measure loop voltage at far end during alarm; review loop loading." }
+      { "rank": 3, "cause": "Loop voltage sag — too many devices, marginal cable",                "remediation": "Measure loop voltage at far end during alarm; review loop loading." },
+      { "rank": 4, "cause": "Day/night sensitivity transition kicking the device over the threshold", "remediation": "Verify day/night profile. Tighten night threshold or move device to less-disturbed location." }
+    ]
+  },
+  {
+    "slug": "sounder-not-activating",
+    "title": "Sounder fails to activate on alarm",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Cause-and-effect rule missing or output wrongly mapped",             "remediation": "View CBE on panel or in PC tool. Confirm zone-to-output mapping; force the output to verify hardware." },
+      { "rank": 2, "cause": "Sounder circuit fuse blown / SCI tripped",                           "remediation": "Reset the sounder circuit isolator at the FIP; replace the fuse if open. Look for the short that caused it." },
+      { "rank": 3, "cause": "End-of-line resistor missing or wrong value",                        "remediation": "Verify EOL value at the far end matches panel spec (often 4k7 or 10k); replace if missing." },
+      { "rank": 4, "cause": "Sounder addressed but disabled in last engineer session",            "remediation": "Check disabled list at FIP; clear the disable." }
+    ]
+  },
+  {
+    "slug": "sounder-ground-noise",
+    "title": "Sounder humming / chattering at rest",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Polarity reversed on a parallel sounder run",                        "remediation": "Check polarity at every device on the SAC; correct the offending leg." },
+      { "rank": 2, "cause": "Earth leak feeding the sounder back-EMF",                            "remediation": "Resolve loop earth fault first; the sounder noise often clears once earth is solid." }
     ]
   },
   {
@@ -38,7 +81,18 @@
     "causes": [
       { "rank": 1, "cause": "Telstra / NBN line carrier issue at premises",                       "remediation": "Test ASE line; raise carrier fault if line unavailable. Don't rebuild ASE first." },
       { "rank": 2, "cause": "ASE polled by monitoring centre showing comm fail",                  "remediation": "Call monitoring centre; confirm last successful poll time before site work." },
-      { "rank": 3, "cause": "FIP relay output to ASE not pulling — output fuse / config",         "remediation": "Force the brigade output via engineer menu; verify ASE input changes state." }
+      { "rank": 3, "cause": "FIP relay output to ASE not pulling — output fuse / config",         "remediation": "Force the brigade output via engineer menu; verify ASE input changes state." },
+      { "rank": 4, "cause": "ASE battery flat / charger fault on ASE itself",                     "remediation": "Measure ASE battery; replace if below 12.0 V at rest. Check ASE charger output." }
+    ]
+  },
+  {
+    "slug": "ase-brigade-no-test-signal",
+    "title": "Monitoring centre reports no test signal at scheduled time",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "ASE clock drift (time-of-day signal sent but slot missed)",          "remediation": "Resync ASE clock to NTP / monitoring centre. Verify next scheduled signal." },
+      { "rank": 2, "cause": "Carrier slow during peak — signal sent but timed-out at MC",         "remediation": "Coordinate with monitoring centre on retransmission policy and timeout window." },
+      { "rank": 3, "cause": "Customer ID misconfigured at site or MC",                            "remediation": "Verify account / customer ID strings on both ends." }
     ]
   },
   {
@@ -46,8 +100,152 @@
     "title": "Frequent mains failure events on FIP",
     "panel_filter": null,
     "causes": [
-      { "rank": 1, "cause": "Sub-board RCD nuisance tripping",                                    "remediation": "Move FIP supply to a dedicated RCBO labelled 'Fire — do not switch'." },
-      { "rank": 2, "cause": "Power supply transformer / PSU failing under load",                  "remediation": "Measure PSU output at standby and during alarm. Replace if drops below spec." }
+      { "rank": 1, "cause": "Sub-board RCD nuisance tripping",                                    "remediation": "Move FIP supply to a dedicated RCBO labelled 'Fire — do not switch' per AS 3000." },
+      { "rank": 2, "cause": "Power supply transformer / PSU failing under load",                  "remediation": "Measure PSU output at standby and during alarm. Replace if drops below spec." },
+      { "rank": 3, "cause": "Local generator or inverter handover producing brief dropout",       "remediation": "Coordinate with site facilities; tune handover timing or fit a UPS section ahead of FIP." }
+    ]
+  },
+  {
+    "slug": "detector-contaminated",
+    "title": "Detector reporting high analogue value (drift / contamination)",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Dust accumulation in ceiling void over years",                       "remediation": "Vacuum / replace head with clean unit per the panel's drift compensation limits." },
+      { "rank": 2, "cause": "Adjacent kitchen / steam exposure",                                  "remediation": "Relocate detector outside steam path; consider heat detector at the same point." },
+      { "rank": 3, "cause": "Detector beyond service life",                                       "remediation": "Replace per AS 1670.1 manufacturer-recommended life (typically 10 yr photoelectric)." }
+    ]
+  },
+  {
+    "slug": "detector-maintenance-overdue",
+    "title": "Detector showing 'maintenance' or 'service required' flag",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Auto-drift compensation has reached its limit",                      "remediation": "Clean the head. If flag persists after clean, replace." },
+      { "rank": 2, "cause": "Device firmware mismatch after a panel firmware bump",               "remediation": "Verify device versions in the loop status screen; reflash devices via vendor tool if supported." }
+    ]
+  },
+  {
+    "slug": "mcp-false-alarm",
+    "title": "MCP triggering without operation (false alarm)",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Glass element loose / cracked from prior tampering",                 "remediation": "Replace element; reset MCP. Add tamper sticker." },
+      { "rank": 2, "cause": "MCP location subject to physical knocks (loading dock, plant room)", "remediation": "Fit transparent guard or relocate per AS 1670.1 6.4 mounting guidance." },
+      { "rank": 3, "cause": "Internal microswitch failure",                                       "remediation": "Replace MCP; fault data captured in event log for warranty." }
+    ]
+  },
+  {
+    "slug": "isolator-chatter",
+    "title": "Isolator chattering between fault and clear",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Marginal short on the loop section the isolator covers",             "remediation": "Investigate the isolated section; commonly a damaged base or a dripping pipe near a device." },
+      { "rank": 2, "cause": "Failed isolator module itself",                                      "remediation": "Bypass the isolator temporarily; if chatter clears, replace it." }
+    ]
+  },
+  {
+    "slug": "lift-recall-fail",
+    "title": "Lift recall did not occur on alarm test",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Wrong zone mapped to lift recall in cause-and-effect",               "remediation": "Verify CBE: lift recall input must trigger from the lift-shaft and lift-lobby smoke detectors (per AS 1735.11)." },
+      { "rank": 2, "cause": "Lift controller relay not seeing FIP output",                        "remediation": "Force the FIP output; meter at lift controller terminal. Replace relay or wire if dead." },
+      { "rank": 3, "cause": "Lift recall disabled at lift controller via maintenance switch",     "remediation": "Confirm with lift contractor; reset switch and retest." }
+    ]
+  },
+  {
+    "slug": "smoke-curtain-no-deploy",
+    "title": "Smoke curtain / fire door release did not operate",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Hold-open device fuse blown / 24 V supply lost",                     "remediation": "Verify hold-open supply; replace fuse; check no upstream short." },
+      { "rank": 2, "cause": "Output relay not mapped in CBE",                                     "remediation": "Add the trigger zone to the curtain/door output rule." }
+    ]
+  },
+  {
+    "slug": "panel-network-comms-fail",
+    "title": "Networked / sub-panel comms failure",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Network cable broken / patched into wrong fibre at IT change",       "remediation": "Verify network port LEDs at both ends; trace to last patch." },
+      { "rank": 2, "cause": "Sub-panel address conflict after a node was added",                  "remediation": "Inspect node IDs in network config; renumber duplicates." },
+      { "rank": 3, "cause": "Different firmware versions on the network bus",                    "remediation": "Update all nodes to a common firmware level via vendor tool." }
+    ]
+  },
+  {
+    "slug": "wip-handset-fault",
+    "title": "WIP / warden phone faulty (no audio or constant fault)",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Handset cable damaged at the wall jack",                             "remediation": "Replace handset / cord. Test bidirectional audio with a second handset." },
+      { "rank": 2, "cause": "EWIS line resistance out of spec from added taps",                   "remediation": "Measure line resistance; rebalance the run or split into a second WIP line." }
+    ]
+  },
+  {
+    "slug": "speaker-line-fault",
+    "title": "Speaker line / SAC fault on EWIS",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Open-circuit fault — broken speaker tap or kicked cable",            "remediation": "Use line tester at the SAC to identify break point. Splice or replace cable." },
+      { "rank": 2, "cause": "Short-circuit fault — pinched cable or shorted speaker",             "remediation": "Bisect the run; replace the failed speaker." },
+      { "rank": 3, "cause": "EOL resistor missing or wrong value",                                "remediation": "Verify EOL at far end (commonly 10 kΩ); refit if missing." }
+    ]
+  },
+  {
+    "slug": "vesda-pipe-airflow-fault",
+    "title": "VESDA / aspirating airflow fault",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Sampling pipe blocked / capped during recent works",                 "remediation": "Inspect pipework end caps and joins; clear blockage; rebalance." },
+      { "rank": 2, "cause": "Filter element exhausted",                                           "remediation": "Replace filter cartridge per manufacturer schedule (Xtralis VLF/VLP)." },
+      { "rank": 3, "cause": "Aspirator fan worn / rpm low",                                       "remediation": "Check fan rpm via VSC/Xtralis tool; replace fan if below threshold." }
+    ]
+  },
+  {
+    "slug": "false-alarm-overnight",
+    "title": "Recurring false alarm overnight, same time window",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Cleaner triggering smoke detector with extension pole / spray",      "remediation": "Coordinate with cleaning contractor; consider isolation window overnight (with site approval)." },
+      { "rank": 2, "cause": "Plant cycling (HVAC / kitchen exhaust) producing smoke ingress",     "remediation": "Reposition detector; consider duct detector instead of point detector." },
+      { "rank": 3, "cause": "Day/night threshold not switching on time",                          "remediation": "Verify panel time-of-day clock; confirm day/night profile in CBE." }
+    ]
+  },
+  {
+    "slug": "panel-keypad-locked-out",
+    "title": "Panel keypad locked / engineer login not accepted",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Caps / shift state on physical keys causing PIN mismatch",           "remediation": "Verify keypad mode; some panels are case-sensitive on alphanumeric." },
+      { "rank": 2, "cause": "Lockout after N failed attempts (vendor-specific)",                  "remediation": "Wait the cool-down or power cycle after authorised approval; document attempt." },
+      { "rank": 3, "cause": "Engineer code rotated by previous service company",                  "remediation": "Use vendor master / dealer process to recover; never store codes in panel labels." }
+    ]
+  },
+  {
+    "slug": "sprinkler-flow-switch-fault",
+    "title": "Sprinkler flow switch input showing fault / open",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Flow switch monitored input EOL missing after recent test",          "remediation": "Refit EOL at flow switch terminals; verify input matches per AS 2118 monitoring." },
+      { "rank": 2, "cause": "Wiring trapped during sprinkler maintenance",                        "remediation": "Inspect cable run from FIP to flow switch; repair." }
+    ]
+  },
+  {
+    "slug": "duct-detector-not-cycling",
+    "title": "HVAC duct detector not seeing test smoke during AS 1851 6-monthly",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Sampling tube blocked or pointing wrong way in duct",                "remediation": "Reorient sampling tube into airflow; clean tube." },
+      { "rank": 2, "cause": "AC fan off during the test — no airflow to push test smoke",         "remediation": "Coordinate with HVAC tech; test with system running." }
+    ]
+  },
+  {
+    "slug": "panel-event-log-full",
+    "title": "Event log near full / oldest events being overwritten",
+    "panel_filter": null,
+    "causes": [
+      { "rank": 1, "cause": "Persistent fault generating thousands of events per day",            "remediation": "Identify and resolve the chattering fault first; archive log before clearing." },
+      { "rank": 2, "cause": "Log rotation not configured",                                        "remediation": "Print / export the log per AS 1851 record-keeping; clear with engineer authorisation." }
     ]
   }
 ]
