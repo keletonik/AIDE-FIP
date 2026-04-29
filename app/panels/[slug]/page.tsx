@@ -39,7 +39,9 @@ export default async function PanelPage({ params }: { params: Promise<{ slug: st
             Manual in knowledge base ↗
           </a>
         )}
-        <Link className="btn" href={`/battery?panel=${panel.slug}`}>Battery calc for this panel →</Link>
+        <Link className="btn" href={`/panels/${panel.slug}/programming`}>Programming reference →</Link>
+        <Link className="btn" href={`/battery?panel=${panel.slug}`}>Battery calc →</Link>
+        <Link className="btn" href="/loop-calc">Loop voltage-drop →</Link>
       </div>
 
       {Object.entries(byCtx).map(([ctx, list]) => (

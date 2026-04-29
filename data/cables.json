@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "ws52w-fp200",
+    "name": "FP200 Gold (WS52W)",
+    "category": "fire-rated-mineral",
+    "fire_rating": "120 min integrity, water-spray + mechanical shock",
+    "ws_class": "WS52W",
+    "csa_mm2": [1.0, 1.5, 2.5, 4.0],
+    "use_cases": ["FIP loop SLC", "sounder circuits (SAC)", "EWIS speaker lines", "ASE / brigade interface"],
+    "as_refs": ["AS 1670.1 §7.3", "AS/NZS 3013"],
+    "notes": "Industry default for fire-alarm cabling in NSW. Solid copper conductors, ceramifiable insulation. Support spacing per manufacturer; usually ≤ 0.45 m for clipped runs."
+  },
+  {
+    "slug": "mims",
+    "name": "Mineral-Insulated Metal-Sheathed (MIMS / MICC)",
+    "category": "fire-rated-mineral",
+    "fire_rating": "180 min integrity",
+    "ws_class": "WS52W (or higher)",
+    "csa_mm2": [1.5, 2.5, 4.0, 6.0, 10.0],
+    "use_cases": ["fire pump power", "stair pressurisation power", "high-risk EWIS amplifier feeds"],
+    "as_refs": ["AS/NZS 3013", "AS 1668.1"],
+    "notes": "Older copper-jacketed alternative to FP200 — heavier, harder to terminate. Used where mechanical durability is critical (plant rooms)."
+  },
+  {
+    "slug": "fr-swa",
+    "name": "Fire-rated Steel Wire Armoured (FR-SWA)",
+    "category": "fire-rated-armoured",
+    "fire_rating": "90–120 min depending on construction",
+    "ws_class": "varies",
+    "csa_mm2": [2.5, 4.0, 6.0, 10.0, 16.0],
+    "use_cases": ["external mains feeds to FIP", "fire pump submains", "sub-board to riser"],
+    "as_refs": ["AS/NZS 3008", "AS 1670.1 §7.3"],
+    "notes": "Mechanical armour for buried or external runs. NOT a substitute for WS52W on the SLC itself. Verify the specific construction's AS 3013 compliance."
+  },
+  {
+    "slug": "fp200-flex",
+    "name": "FP200 Flex (multi-strand)",
+    "category": "fire-rated-flex",
+    "fire_rating": "60–120 min",
+    "ws_class": "WS31W typical",
+    "csa_mm2": [0.75, 1.0, 1.5],
+    "use_cases": ["short flexible drops to luminaires", "device tails"],
+    "as_refs": ["AS/NZS 3013"],
+    "notes": "Use for short flexible terminations only. Do not run as a loop — solid-core for fixed runs."
+  },
+  {
+    "slug": "tps-non-fire",
+    "name": "Standard TPS (NOT fire-rated)",
+    "category": "general-electrical",
+    "fire_rating": "none",
+    "ws_class": "—",
+    "csa_mm2": [1.0, 1.5, 2.5, 4.0],
+    "use_cases": ["NEVER for fire detection / EWIS / brigade circuits"],
+    "as_refs": [],
+    "notes": "DO NOT USE for any fire-system circuit. Listed here so techs can identify it on retrofit work — find it in old buildings, replace with WS52W."
+  },
+  {
+    "slug": "data-cat6",
+    "name": "Cat6 / Cat6A data",
+    "category": "data",
+    "fire_rating": "none (LSZH variants exist)",
+    "ws_class": "—",
+    "csa_mm2": [0.2],
+    "use_cases": ["FIP-to-workstation Ethernet only (non-life-safety)"],
+    "as_refs": [],
+    "notes": "Non-fire-rated. Use for monitoring console links, not for SLC or output circuits. LSZH variant for plenum runs."
+  }
+]

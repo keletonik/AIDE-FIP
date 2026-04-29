@@ -7,15 +7,18 @@ import { currentUser } from './auth';
 //      (break-glass for when sessions are broken or DB is being inspected
 //      directly from a separate process)
 //
-// In dev, with no ADMIN_KEY set and no user, the gate is open. In prod,
-// without either credential, the gate is locked.
+// Default-deny in all environments. In dev you can opt into the open
+// gate with AIDE_DEV_OPEN=1 — never set this on a deployment that's
+// reachable from the public internet.
 
 export async function isAdmin(req?: Request): Promise<boolean> {
   const me = await currentUser().catch(() => null);
   if (me?.role === 'admin') return true;
 
   const expected = process.env.ADMIN_KEY;
-  if (!expected) return process.env.NODE_ENV !== 'production';
+  if (!expected) {
+    return process.env.NODE_ENV !== 'production' && process.env.AIDE_DEV_OPEN === '1';
+  }
 
   if (req) {
     const header = req.headers.get('x-admin-key');

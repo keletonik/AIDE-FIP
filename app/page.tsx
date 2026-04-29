@@ -2,10 +2,13 @@ import Link from 'next/link';
 import { currentUser } from '@/lib/auth';
 
 const referenceTiles = [
-  { href: '/standards',    title: 'Standards',     blurb: 'AS 1670 family, AS 1851 service, AS 3745 emergency planning. Paraphrased clauses; deep links into the knowledge base.' },
-  { href: '/panels',       title: 'Panels',        blurb: 'Pertronic, Ampac, Notifier, Simplex, Vigilant MX1, Bosch, Hochiki, Tyco. Day-mode and engineer keystrokes.' },
+  { href: '/standards',    title: 'Standards',     blurb: 'AS 1670 family, AS 1851 service, AS 4428.16 EWIS, AS 7240, AS 1735.11 lifts, AS 1668.1 HVAC. Paraphrased clauses, deep KB link-outs.' },
+  { href: '/panels',       title: 'Panels',        blurb: '23 panels: Pertronic, Vigilant FP/MX1/T-Gen, Ampac, Notifier ID3000/NFS2-3030, Simplex, EST3, Tyco MX/F3200, Bosch, Hochiki, Mircom, Ziton, GST, Inim, Morley.' },
   { href: '/battery',      title: 'Battery calc',  blurb: '24 h standby + 30 min alarm by default, with ageing factor. Suggests next commercial size up.' },
-  { href: '/troubleshoot', title: 'Troubleshoot',  blurb: 'Symptom → ranked causes → remediation. Earth faults, charger faults, ASE faults, intermittents.' },
+  { href: '/loop-calc',    title: 'Loop V-drop',   blurb: 'Worst-case voltage at the far device. Per-protocol budgets (Apollo, ESP, IDNet, LSN, Pertronic, OPAL).' },
+  { href: '/spacing',      title: 'Detector spacing', blurb: 'AS 1670.1 §3.2/§3.5/§3.6 grid sizing — point smoke, point heat, beam smoke. Flat-ceiling sanity check.' },
+  { href: '/cables',       title: 'Cable selector', blurb: 'FP200 (WS52W), MIMS, FR-SWA — what to use where, AS 3013 / AS 1670.1 §7.3 references.' },
+  { href: '/troubleshoot', title: 'Troubleshoot',  blurb: '25 symptoms covering earth faults, ASE, EWIS, lift recall, AHU shutdown, VESDA, intermittents and more.' },
 ];
 const workflowTiles = [
   { href: '/sites',        title: 'Sites',         blurb: 'Per-site panel register, defects, AS 1851 service records, brigade tests, cause-and-effect.' },
