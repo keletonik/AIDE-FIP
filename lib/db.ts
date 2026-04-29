@@ -46,6 +46,7 @@ function migrate(h: Database.Database) {
     { v: 1, sql: V1 },
     { v: 2, sql: V2 },
     { v: 3, sql: V3 },
+    { v: 4, sql: V4 },
   ];
 
   const apply = h.transaction((s: { v: number; sql: string }) => {
@@ -319,6 +320,29 @@ const V2 = `
 const V3 = `
   ALTER TABLE users ADD COLUMN username TEXT;
   CREATE UNIQUE INDEX ux_users_username ON users(username) WHERE username IS NOT NULL;
+`;
+
+// V4 — active isolation register. Most-common liability gap in service
+// work: tech disables a zone for testing, leaves site, never re-enables.
+// Every isolation is logged; "active" means restored_at IS NULL. The
+// site dashboard surfaces these so you cannot leave them open by accident.
+const V4 = `
+  CREATE TABLE isolations (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    site_id       INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
+    site_panel_id INTEGER REFERENCES site_panels(id) ON DELETE SET NULL,
+    scope         TEXT NOT NULL CHECK (scope IN ('point','zone','loop','sounder','output','panel')),
+    target        TEXT NOT NULL,
+    reason        TEXT NOT NULL,
+    isolated_by   INTEGER REFERENCES users(id),
+    isolated_at   TEXT NOT NULL DEFAULT (datetime('now')),
+    expected_restore_at TEXT,
+    restored_by   INTEGER REFERENCES users(id),
+    restored_at   TEXT,
+    notes         TEXT
+  );
+  CREATE INDEX idx_isolations_site_active ON isolations(site_id, restored_at);
+  CREATE INDEX idx_isolations_active ON isolations(restored_at);
 `;
 
 // Convenience wrappers used across server components and route handlers.

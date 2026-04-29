@@ -7,6 +7,7 @@ import { serviceRecords } from '@/lib/services';
 import { brigadeTests } from '@/lib/brigade';
 import { ceMatrices } from '@/lib/cematrix';
 import { detectors, ageingReport } from '@/lib/detectors';
+import { isolations } from '@/lib/isolations';
 import { panels as panelRepo } from '@/lib/repos';
 import { audit } from '@/lib/audit';
 
@@ -31,6 +32,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
   const ageing = ageingReport(siteId);
   const overdue   = ageing.filter(d => d.bucket === 'overdue').length;
   const dueSoon   = ageing.filter(d => d.bucket === 'due-soon').length;
+  const activeIsolations = isolations.activeForSite(siteId).length;
 
   const panelLookup = new Map(panelRepo.list().map(p => [p.slug, p]));
 
@@ -60,8 +62,8 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <Stat label="Open defects" value={open.length} accent={open.length > 0 ? 'warn' : null} href={`/sites/${siteId}/defects`} />
         <Stat label="Panels"       value={sps.length} href={`/sites/${siteId}/panels`} />
+        <Stat label="Active isolations" value={activeIsolations} accent={activeIsolations > 0 ? 'warn' : null} href={`/sites/${siteId}/isolations`} />
         <Stat label="Detectors overdue" value={overdue} accent={overdue > 0 ? 'warn' : null} href={`/sites/${siteId}/detectors`} />
-        <Stat label="Due within a year" value={dueSoon} accent={dueSoon > 0 ? 'amber' : null} href={`/sites/${siteId}/detectors`} />
       </div>
 
       <Section title="Panels" actions={canEdit ? <Link className="btn" href={`/sites/${siteId}/panels`}>Manage →</Link> : null}>
@@ -84,6 +86,15 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
             </ul>
           )}
       </Section>
+
+      {activeIsolations > 0 && (
+        <Section title="Active isolations" actions={<Link className="btn" href={`/sites/${siteId}/isolations`}>Manage →</Link>}>
+          <p className="text-warn text-sm">
+            ⚠ {activeIsolations} active isolation{activeIsolations === 1 ? '' : 's'} on this site.
+            Restore before leaving site.
+          </p>
+        </Section>
+      )}
 
       <Section title="Defects" actions={canEdit ? <Link className="btn btn-primary" href={`/sites/${siteId}/defects/new`}>+ Raise defect</Link> : null}>
         {defs.length === 0
